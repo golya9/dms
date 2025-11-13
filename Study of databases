@@ -1,0 +1,30 @@
+CREATE DATABASE db1;
+
+USE db1;
+
+CREATE TABLE customers (
+    id INT(10),
+    name VARCHAR(50),
+    city VARCHAR(50),
+    PRIMARY KEY (id)
+);
+
+ALTER TABLE customers 
+ADD age VARCHAR(50);
+
+INSERT INTO customers 
+VALUES (101, 'Rahul', 'Delhi');
+
+UPDATE customers 
+SET name = 'Bob', city = 'London' 
+WHERE id = 101;
+
+DELETE FROM customers 
+WHERE id = 101;
+
+SELECT * FROM customers;
+
+TRUNCATE TABLE customers;
+
+DROP TABLE customers;
+-- DROP DATABASE db1;
