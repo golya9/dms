@@ -1,0 +1,77 @@
+CREATE DATABASE mydb;
+USE mydb;
+
+CREATE TABLE employee (
+    empid INT,
+    ename VARCHAR(100),
+    contactno BIGINT,
+    DOB DATE,
+    DOJ DATE,
+    salary INT,
+    Pid INT,
+    did INT
+);
+
+INSERT INTO employee (empid, ename, contactno, DOB, DOJ, salary, Pid, did) VALUES
+(1256, 'Aarti Rathi', 77852, '2000-10-17', '2017-10-14', 17025, 2, 5),
+(1257, 'Aditya Rathi', 96890, '1000-10-10', '2014-03-27', 21005, 4, 1),
+(1271, 'Binod', 78523, '1995-08-10', '2018-07-11', 25418, 3, 4),
+(1222, 'Anushka', 77453, '1998-04-01', '2019-12-12', 27521, 1, 5);
+
+DELIMITER $$
+CREATE PROCEDURE empcursor()
+BEGIN
+    DECLARE id INT;
+    DECLARE sal INT;
+    DECLARE flag INT DEFAULT 0;
+    DECLARE c1 CURSOR FOR SELECT empid, salary FROM employee;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET flag = 1;
+    OPEN c1;
+    FETCH c1 INTO id, sal;
+    SELECT id, sal;
+    CLOSE c1;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE empcursor1()
+BEGIN
+    DECLARE id INT;
+    DECLARE sal INT;
+    DECLARE flag INT DEFAULT 0;
+    DECLARE c1 CURSOR FOR SELECT empid, salary FROM employee;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET flag = 1;
+    OPEN c1;
+    FETCH c1 INTO id, sal;
+    IF sal < 22000 THEN
+        SELECT 'Class A';
+    END IF;
+    CLOSE c1;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE empcursor2()
+BEGIN
+    DECLARE id INT;
+    DECLARE sal INT;
+    DECLARE flag INT DEFAULT 0;
+    DECLARE c1 CURSOR FOR SELECT empid, salary FROM employee;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET flag = 1;
+    OPEN c1;
+    emp_loop: LOOP
+        FETCH c1 INTO id, sal;
+        IF flag = 1 THEN
+            LEAVE emp_loop;
+        END IF;
+        IF sal < 22000 THEN
+            SELECT 'C Class';
+        ELSEIF sal > 22000 AND sal < 25000 THEN
+            SELECT 'B Class';
+        ELSE
+            SELECT 'A Class';
+        END IF;
+    END LOOP emp_loop;
+    CLOSE c1;
+END $$
+DELIMITER ;
